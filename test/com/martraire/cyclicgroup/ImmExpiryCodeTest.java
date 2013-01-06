@@ -3,13 +3,14 @@
  */
 package com.martraire.cyclicgroup;
 
-import static org.junit.Assert.*;
+import static com.martraire.cyclicgroup.ImmExpiryCode.valueOf;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Comparator;
 
 import org.junit.Test;
-
-import static com.martraire.cyclicgroup.ImmExpiryCode.valueOf;
 
 public class ImmExpiryCodeTest {
 
@@ -66,5 +67,11 @@ public class ImmExpiryCodeTest {
 
 		// the tricky case as of H3
 		assertTrue(c.compare(H4, H2) < 0);
+	}
+
+	@Test
+	public void each_code_is_singleton() {
+		assertSame(H3, valueOf("H3"));
+		assertSame(valueOf("M3"), valueOf("H3").next());
 	}
 }

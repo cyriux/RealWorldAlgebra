@@ -14,6 +14,9 @@ public class ImmExpiryCode {
 	private static final int MONTH_ORDER = MonthCode.values().length;
 	private static final int ORDER = MONTH_ORDER * 10;
 
+	// lazy cache of instance by ordinal value
+	private static final ImmExpiryCode[] cache = new ImmExpiryCode[ORDER];
+
 	/**
 	 * A comparator of ImmExpiryCode as of a given reference ImmExpiryCode
 	 */
@@ -44,16 +47,29 @@ public class ImmExpiryCode {
 
 	// the integer in the corresponding cycling group of integers
 	private final int ordinal;
+	private final String label;
 
 	private ImmExpiryCode(int ordinal) {
 		this.ordinal = ordinal;
+		this.label = MonthCode.values()[ordinal % MONTH_ORDER].toString()
+				+ ordinal / MONTH_ORDER;
 	}
 
 	public static ImmExpiryCode valueOf(String code) {
 		final int year = Integer.valueOf(code.substring(code.length() - 1));
 		final MonthCode monthCode = MonthCode.valueOf(code.substring(0, 1));
 		final int ordinal = year * MONTH_ORDER + monthCode.ordinal();
-		return new ImmExpiryCode(ordinal);
+		return getInstance(ordinal);
+	}
+
+	private static ImmExpiryCode getInstance(final int ordinal) {
+		final ImmExpiryCode instance = cache[ordinal];
+		if (instance != null) {
+			return instance;
+		}
+		final ImmExpiryCode newInstance = new ImmExpiryCode(ordinal);
+		cache[ordinal] = newInstance;
+		return newInstance;
 	}
 
 	public ImmExpiryCode next() {
@@ -65,7 +81,7 @@ public class ImmExpiryCode {
 	}
 
 	private ImmExpiryCode roll(int steps) {
-		return new ImmExpiryCode(ordinal + steps);
+		return getInstance(ordinal + steps);
 	}
 
 	@Override
@@ -84,7 +100,6 @@ public class ImmExpiryCode {
 
 	@Override
 	public String toString() {
-		return MonthCode.values()[ordinal % MONTH_ORDER].toString() + ordinal
-				/ MONTH_ORDER;
+		return label;
 	}
 }
