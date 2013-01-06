@@ -43,7 +43,7 @@ Given a list of IMM codes we often need to sort them for display. The problem is
 
 This is why we cannot unfortunately just implement Comparable to take care of the ordering. Because we need to consider a date-aware partial order, we need to resort to a Comparator that takes the reference IMM code in its constructor. 
 
-Once we map that problem to the cyclic group of integers, it becomes easy to shift both operands of the comparison toward 0 before comparing them in a safe way. Again, this trick is made possible by the freedom to experiment given by the TDD tests. As long as we're still green, we can go ahead and try any approach.
+Once we identify that situation to the cyclic group of integers, it becomes easy to shift both operands of the comparison to 0 before comparing them in a safe (total order-ish) way. Again, this trick is made possible by the freedom to experiment given by the TDD tests. As long as we're still green, we can go ahead and try any approach.
 
 Try it as a kata
 ----------------
