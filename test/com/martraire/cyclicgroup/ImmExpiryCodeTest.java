@@ -14,10 +14,12 @@ import org.junit.Test;
 
 public class ImmExpiryCodeTest {
 
+	private static final ImmExpiryCode H0 = valueOf("H0");
 	private static final ImmExpiryCode H1 = valueOf("H1");
 	private static final ImmExpiryCode H2 = valueOf("H2");
 	private static final ImmExpiryCode H3 = valueOf("H3");
 	private static final ImmExpiryCode H4 = valueOf("H4");
+	private static final ImmExpiryCode H9 = valueOf("H9");
 
 	@Test
 	public void valueOf_of_entity() {
@@ -67,6 +69,7 @@ public class ImmExpiryCodeTest {
 
 		// the tricky case as of H3
 		assertTrue(c.compare(H4, H2) < 0);
+		assertTrue(c.compare(H9, H0) < 0);
 	}
 
 	@Test
