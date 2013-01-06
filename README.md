@@ -1,0 +1,1 @@
+Examples of abstract algebra structures used for real-world problems
