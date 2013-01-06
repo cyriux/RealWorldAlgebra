@@ -25,9 +25,9 @@ Now we also have Wikipedia, so it was easy to find out more on the established f
 
 The Wikipedia page also mentions a concept of the product of cyclic groups in relation with their order (here the number of elements). Looks like this is the math-ish way to say that 4 possibilities for quarterly months combined with 10 possible year digits give 40 different codes in total.
 
-So what? Sounds like we could identity the set of the 4 months to a cyclic group, the set of the 10 year digits to another, and that even the combination (product) of both is also a cyclic group of order 1à * 4 = 40. So what?
+So what? Sounds like we could identity the set of the 4 months to a cyclic group, the set of the 10 year digits to another, and that even the combination (product) of both also looks like a cyclic group of order 10 * 4 = 40 (even though the addition operation will not be called like that). So what?
 
-Because we've just seen that there is an isomorphism between ANY finite cyclic group and the cyclic group of integer of the same order, we can just switch to the integer cyclic group logic (plain integers and the modulo operator) to simplify the implementation big time! 
+Because we've just seen that there is an isomorphism between ANY finite cyclic group and the cyclic group of integer of the same order, we can just switch to the integer cyclic group logic (plain integers and the modulo operator) to simplify the implementation big time.
 
 Basically the idea is to convert from the code to an integer in the range 0..39, then do every operation on this 'ordinal' integer instead of the actual code. Then we can format back to a code whenever we really need it.
 
