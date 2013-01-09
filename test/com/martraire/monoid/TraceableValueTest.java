@@ -1,5 +1,6 @@
 package com.martraire.monoid;
 
+import static java.lang.Math.abs;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
@@ -27,9 +28,13 @@ public class TraceableValueTest {
 			return description;
 		}
 
-		@Override
-		public String toString() {
-			return description + ": " + value;
+		public TraceableValue add(TraceableValue other) {
+			if (other.value == 0) {
+				return this;
+			}
+			final String journal = description + (other.value > 0 ? " + " : " - ") + other.description + " ("
+					+ abs(other.value) + ")";
+			return new TraceableValue(value + other.value, journal);
 		}
 
 		@Override
@@ -50,9 +55,9 @@ public class TraceableValueTest {
 					&& Double.doubleToLongBits(value) == Double.doubleToLongBits(other.value);
 		}
 
-		public TraceableValue add(TraceableValue other) {
-			return new TraceableValue(value + other.value, description + " + " + other.description + " (" + other.value
-					+ ")");
+		@Override
+		public String toString() {
+			return description + ": " + value;
 		}
 	}
 
@@ -66,10 +71,23 @@ public class TraceableValueTest {
 	}
 
 	@Test
+	public void observation_with_zero_additive_margin() {
+		final TraceableValue observation = new TraceableValue(LIBOR_VALUE, "Observation on Jan 9, 2013");
+		assertEquals(new TraceableValue(3.25, "Observation on Jan 9, 2013"),
+				observation.add(new TraceableValue(0, "Margin")));
+	}
+
+	@Test
 	public void observation_with_positive_additive_margin() {
 		final TraceableValue observation = new TraceableValue(LIBOR_VALUE, "Observation on Jan 9, 2013");
 		assertEquals(new TraceableValue(3.45, "Observation on Jan 9, 2013 + Margin (0.2)"),
 				observation.add(new TraceableValue(0.20, "Margin")));
 	}
 
+	@Test
+	public void observation_with_negative_additive_margin() {
+		final TraceableValue observation = new TraceableValue(LIBOR_VALUE, "Observation on Jan 9, 2013");
+		assertEquals(new TraceableValue(3.15, "Observation on Jan 9, 2013 - Margin (0.1)"),
+				observation.add(new TraceableValue(-0.10, "Margin")));
+	}
 }
