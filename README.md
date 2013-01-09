@@ -29,7 +29,7 @@ In closing
 ----------
 Maths structures are hidden behind many common business concepts. And I look for them whenever I can!
 
-See the (http://cyrille.martraire.com/2013/01/tdd-vs-math-formalism-friend-or-foe/)[first blog post] on my my blog
+See the [first blog post](http://cyrille.martraire.com/2013/01/tdd-vs-math-formalism-friend-or-foe/) on my my blog
 
 
 
