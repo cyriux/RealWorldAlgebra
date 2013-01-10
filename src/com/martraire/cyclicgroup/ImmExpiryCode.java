@@ -5,14 +5,15 @@ import java.util.Comparator;
 /**
  * Represents an IMM contract code in the format "U8"
  */
-public class ImmExpiryCode {
+public final class ImmExpiryCode {
 
 	public static enum MonthCode {
 		H, M, U, Z;
 	}
 
 	private static final int MONTH_ORDER = MonthCode.values().length;
-	private static final int ORDER = MONTH_ORDER * 10;
+	private static final int YEAR_ORDER = 10;
+	private static final int ORDER = MONTH_ORDER * YEAR_ORDER;
 
 	// lazy cache of instance by ordinal value
 	private static final ImmExpiryCode[] cache = new ImmExpiryCode[ORDER];
@@ -30,8 +31,7 @@ public class ImmExpiryCode {
 
 		@Override
 		public int compare(ImmExpiryCode code, ImmExpiryCode other) {
-			return normalize(code.ordinal - ref.ordinal)
-					- normalize(other.ordinal - ref.ordinal);
+			return normalize(code.ordinal - ref.ordinal) - normalize(other.ordinal - ref.ordinal);
 		}
 
 		private int normalize(final int delta) {
@@ -47,12 +47,12 @@ public class ImmExpiryCode {
 
 	// the integer in the corresponding cycling group of integers
 	private final int ordinal;
+	// precalculated label for toString()
 	private final String label;
 
 	private ImmExpiryCode(int ordinal) {
 		this.ordinal = ordinal;
-		this.label = MonthCode.values()[ordinal % MONTH_ORDER].toString()
-				+ ordinal / MONTH_ORDER;
+		this.label = MonthCode.values()[ordinal % MONTH_ORDER].toString() + ordinal / MONTH_ORDER;
 	}
 
 	public static ImmExpiryCode valueOf(String code) {
