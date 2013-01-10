@@ -2,78 +2,9 @@ package com.martraire.vectorspace;
 
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
-
 import org.junit.Test;
 
-import com.martraire.vectorspace.CurveTest.Curve;
-
 public class CurveTest {
-
-	public static final class Curve {
-		public static final Curve NEUTRAL_ELEMENT = new Curve(0, 0);
-
-		private final double[] value;
-
-		public Curve(double... value) {
-			this.value = value;
-		}
-
-		public Curve add(Curve other) {
-			double[] result = new double[value.length];
-			for (int i = 0; i < value.length; i++) {
-				result[i] = value[i] + other.value[i];
-			}
-			return new Curve(result);
-		}
-
-		public Curve times(Curve other) {
-			double[] result = new double[value.length];
-			for (int i = 0; i < value.length; i++) {
-				result[i] = value[i] * other.value[i];
-			}
-			return new Curve(result);
-		}
-
-		public Curve times(final double coefficient) {
-			double[] result = new double[value.length];
-			for (int i = 0; i < value.length; i++) {
-				result[i] = value[i] * coefficient;
-			}
-			return new Curve(result);
-		}
-
-		public double sum() {
-			double result = 0;
-			for (int i = 0; i < value.length; i++) {
-				result += value[i];
-			}
-			return result;
-		}
-
-		@Override
-		public int hashCode() {
-			return value.hashCode();
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-			if (!(obj instanceof Curve)) {
-				return false;
-			}
-			final Curve other = (Curve) obj;
-			return Arrays.equals(value, other.value);
-		}
-
-		@Override
-		public String toString() {
-			return Arrays.toString(value);
-		}
-
-	}
 
 	@Test
 	public void scalar_addition() {
@@ -87,7 +18,7 @@ public class CurveTest {
 
 	@Test
 	public void vector_addition_on_neutral_element() {
-		assertEquals(new Curve(11, 7), new Curve(11, 7).add(Curve.NEUTRAL_ELEMENT));
+		assertEquals(new Curve(11, 7), new Curve(11, 7).add(new Curve(0, 0)));
 	}
 
 	@Test
@@ -106,7 +37,7 @@ public class CurveTest {
 	}
 
 	@Test
-	public void price_of_bond() {
+	public void price_of_financial_instrument() {
 		final Curve cashflows = new Curve(11, 12);
 		final Curve discountFactors = new Curve(1, 0.5);
 		final Curve discountedCashflows = cashflows.times(discountFactors);
