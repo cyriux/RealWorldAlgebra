@@ -41,7 +41,7 @@ public final class TraceableValue {
 		if (other.value == 1) {
 			return this;
 		}
-		final String journal = description + " * " + other.description + " (" + other.formatted(other.value) + ")";
+		final String journal = description + " * " + other.description + " (" + formatted(other.value) + ")";
 		return new TraceableValue(value * other.value, journal);
 	}
 
