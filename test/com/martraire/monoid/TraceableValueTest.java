@@ -68,14 +68,15 @@ public class TraceableValueTest {
 		assertEquals(new TraceableValue(0.85, "Observation on Jan 9, 2013 * Reverse (-1.00) + Margin (4.10)"),
 				observation.multiply(new TraceableValue(-1, "Reverse")).add(new TraceableValue(4.10, "Margin")));
 	}
+
 	@Test
 	public void coefficient_and_additive_margin_inline() {
 		final TraceableValue observation = new TraceableValue(LIBOR_VALUE, "Observation on Jan 9, 2013");
 		final TraceableValue coeff = new TraceableValue(-1, "Reverse");
 		final TraceableValue margin = new TraceableValue(4.10, "Margin");
-		
+
 		final TraceableValue operation = observation.multiply(coeff).add(margin);
-		
+
 		assertEquals(new TraceableValue(0.85, "Observation on Jan 9, 2013 * Reverse (-1.00) + Margin (4.10)"),
 				operation);
 	}
