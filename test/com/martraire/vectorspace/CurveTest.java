@@ -27,6 +27,11 @@ public class CurveTest {
 	}
 
 	@Test
+	public void curves_of_different_sizes() {
+		assertEquals(new Curve(44), new Curve(11, 99).times(new Curve(4)));
+	}
+
+	@Test
 	public void scalar_scaling_on_neutral_element2() {
 		assertEquals(new Curve(5, 7), new Curve(5, 7).times(new Curve(1, 1)));
 	}
@@ -38,13 +43,14 @@ public class CurveTest {
 
 	@Test
 	public void price_of_financial_instrument() {
-		final Curve cashflows = new Curve(11, 12);
-		final Curve discountFactors = new Curve(1, 0.5);
+		final Curve cashflows = new Curve(11, 12, 14);
+		final Curve discountFactors = new Curve(1, 0.8, 0.5);
 		final Curve discountedCashflows = cashflows.times(discountFactors);
 		final double position = 1000;
 		final Curve scaledCashflows = discountedCashflows.times(position);
+		System.out.println(scaledCashflows);
 		final double price = scaledCashflows.sum();
-		assertEquals(17000, price, 0.1);
+		assertEquals(27600, price, 0.1);
 	}
 
 }

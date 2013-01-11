@@ -1,5 +1,7 @@
 package com.martraire.vectorspace;
 
+import static java.lang.Math.min;
+
 import java.util.Arrays;
 
 public final class Curve {
@@ -37,8 +39,8 @@ public final class Curve {
 	}
 
 	public Curve zipWith(Curve other, final Function function) {
-		double[] result = new double[values.length];
-		for (int i = 0; i < values.length; i++) {
+		double[] result = new double[min(values.length, other.values.length)];
+		for (int i = 0; i < result.length; i++) {
 			result[i] = function.evaluate(values[i], other.values[i]);
 		}
 		return new Curve(result);
