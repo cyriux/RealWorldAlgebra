@@ -47,8 +47,11 @@ public class WorkingDayCalendarTest {
 
 	@Test
 	public void closed_weekend_and_xmas() {
-		final WorkingDayCalendar workingDays = union(weekends(SATURDAY, SUNDAY), bankHolidays(XMAS));
-		assertTrue(workingDays.isWorkingDay(NEW_YEAR));
+		final WorkingDayCalendar workingDaysEUR = union(weekends(SATURDAY, SUNDAY), bankHolidays(XMAS));
+		final WorkingDayCalendar workingDaysUSD = union(weekends(SATURDAY, SUNDAY), bankHolidays(NEW_YEAR));
+		
+		final WorkingDayCalendar workingDays = union(workingDaysEUR, workingDaysUSD);
+		assertFalse(workingDays.isWorkingDay(NEW_YEAR));
 		assertTrue(workingDays.isWorkingDay(JAN_11));
 		assertFalse(workingDays.isWorkingDay(JAN_13));
 		assertFalse(workingDays.isWorkingDay(XMAS));
