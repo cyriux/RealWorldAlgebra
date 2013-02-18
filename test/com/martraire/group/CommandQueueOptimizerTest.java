@@ -26,14 +26,14 @@ public class CommandQueueOptimizerTest {
 	}
 
 	@Test
-	public void SingleCommandRemainsAsIs() {
+	public void singleCommandRemainsAsIs() {
 		final List<Command> commands = Arrays.<Command> asList(new Increment(3));
 		assertEquals(commands, optimize(commands));
 		assertEquals(result(commands), optimizedResult(commands));
 	}
 
 	@Test
-	public void OppositeCommandsCancelOut() {
+	public void oppositeCommandsCancelOut() {
 		final Increment increment = new Increment(3);
 		final List<Command> commands = Arrays.<Command> asList(increment, new Decrement(increment));
 		assertEquals(Arrays.<Command> asList(), optimize(commands));
@@ -41,7 +41,7 @@ public class CommandQueueOptimizerTest {
 	}
 
 	@Test
-	public void NullPotentCommandIgnoresPastCommands() {
+	public void nullPotentCommandIgnoresPastCommands() {
 		final Command reset = new Reset(11);
 		final Command increment2 = new Increment(5);
 		final List<Command> commands = Arrays.<Command> asList(new Increment(3), reset, increment2);
