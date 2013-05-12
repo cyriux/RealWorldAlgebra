@@ -4,41 +4,38 @@ import static com.martraire.eggfarm.Product.EGG;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.junit.Test;
 
 public class EggFarmTest {
 
-	// Estimate production for the 3 coming weeks for cash management
-	// Farm - Henhouse - Chicken -> Egg
+	private static Calendar calendar(int yyyy, int mm, int dd) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeZone(TimeZone.getTimeZone("GMT"));
+		calendar.set(yyyy, mm, dd, 0, 0, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		return calendar;
+	}
 
-	// Given a chicken lays one day each day
-	// And that a henhouse hosts 30 chicken
-	// And that a farm has 12 henhouses
-	// When we count all the eggs over a week
-	// Then the maximum total production amounts to 360 eggs
-
-	private static final Date DAY = new Date(20130511);
-	private static final Quantity ONE_EGG = new Quantity(1, EGG);
-	private static final Quantity THIRTY_EGGS = new Quantity(30, EGG);
-
-	private static final Iterable<Date> daySequence(Date startDate, int dayNumber) {
-		final List<Date> days = new ArrayList<Date>();
-		// FUNKY dates calculations for testing LOL
-		for (long i = 0; i < dayNumber; i++) {
-			days.add(new Date(startDate.getTime() + i));
+	private static ProductionChronicle dailyProductionOf(Product product, Calendar calendar, int... numbers) {
+		final List<Production> productions = new ArrayList<Production>();
+		for (int i = 0; i < numbers.length; i++) {
+			productions.add(Production.of(new Quantity(numbers[i], product), calendar.getTime()));
+			calendar.add(Calendar.DATE, 1);
 		}
-		return days;
+		return ProductionChronicle.of(productions);
 	}
 
 	@Test
 	public void weekly_production_of_one_henhouse_of_30_chicken() {
-		final ProductionChronicle individualProduction = ProductionChronicle.constantProductionOf(ONE_EGG,
-				daySequence(DAY, 7));
-		final ProductionChronicle henhouseProduction = individualProduction.times(30);
-		assertEquals(7, henhouseProduction.size());
-		assertEquals(ProductionChronicle.constantProductionOf(THIRTY_EGGS, daySequence(DAY, 7)), henhouseProduction);
+		final Calendar may30 = calendar(2013, Calendar.MAY, 30);
+		final ProductionChronicle henhouse1 = dailyProductionOf(EGG, may30, 12, 11, 9, 14, 13, 10, 8);
+		final Calendar jun4 = calendar(2013, Calendar.JUNE, 4);
+		final ProductionChronicle henhouse2 = dailyProductionOf(EGG, jun4, 12, 11, 9, 14, 13, 10, 8);
+		assertEquals(henhouse2.times(2).cumulatedBy(EGG), henhouse1.add(henhouse2).cumulatedBy(EGG));
 	}
+
 }

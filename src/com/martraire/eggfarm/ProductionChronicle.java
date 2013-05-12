@@ -2,6 +2,7 @@ package com.martraire.eggfarm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -14,12 +15,8 @@ import java.util.List;
 public class ProductionChronicle implements Iterable<Production> {
 	private final List<Production> productions;
 
-	public static final ProductionChronicle constantProductionOf(final Quantity quantity, Iterable<Date> dates) {
-		final List<Production> productions = new ArrayList<Production>();
-		for (Date date : dates) {
-			productions.add(Production.of(quantity, date));
-		}
-		return new ProductionChronicle(productions);
+	public static final ProductionChronicle of(Collection<Production> productions) {
+		return new ProductionChronicle(new ArrayList<Production>(productions));
 	}
 
 	public ProductionChronicle(Production... productions) {
